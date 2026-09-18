@@ -1,14 +1,18 @@
-from flask import Flask,render_template,request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app =Flask(__name__)#cretes our flask application
 db = mysql.connector.connect(
-    host="host.docker.internal",
-    user="root",
-    password="root",
-    database="E_commerce_db",
-    port=3306
-    )
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME"),
+    port=int(os.getenv("DB_PORT", 3306))
+)
 @app.route("/")
 def home():#first page
     cursor = db.cursor(dictionary=True)
